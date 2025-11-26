@@ -14,7 +14,7 @@ Here is a list of important resources for contributors:
 
 .. _Apache 2.0 license: https://opensource.org/licenses/Apache-2.0
 .. _Source Code: https://github.com/iterative/dvc-task
-.. _Documentation: https://docs.iterative.ai/dvc-task
+.. _Documentation: https://treeverse.github.io/dvc-task/
 .. _Issue Tracker: https://github.com/iterative/dvc-task/issues
 
 How to report a bug
