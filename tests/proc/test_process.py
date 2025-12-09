@@ -11,7 +11,7 @@ from dvc_task.proc.exceptions import TimeoutExpired
 from dvc_task.proc.process import ManagedProcess, ProcessInfo
 
 
-@pytest.mark.usefixtures("tmp_dir", "popen_pid")
+@pytest.mark.usefixtures("tmp_path", "popen_pid")
 @pytest.mark.parametrize(
     "args",
     [
@@ -26,10 +26,9 @@ def test_init_args(args: Union[str, list[str]]):
     assert expected == proc.args
 
 
-@pytest.mark.usefixtures("tmp_dir")
-def test_run(popen_pid: int):
+def test_run(tmp_path, popen_pid: int):
     """Process info should be generated."""
-    proc = ManagedProcess("/bin/foo")
+    proc = ManagedProcess("/bin/foo", wdir=tmp_path)
     proc.run()
     assert popen_pid == proc.info.pid
 
@@ -38,10 +37,10 @@ def test_run(popen_pid: int):
         assert popen_pid == info.pid
 
 
-@pytest.mark.usefixtures("tmp_dir", "popen_pid")
-def test_wait(mocker: MockerFixture):
+@pytest.mark.usefixtures("popen_pid")
+def test_wait(tmp_path, mocker: MockerFixture):
     """Wait should block while process is running and incomplete."""
-    with ManagedProcess("/bin/foo") as proc:
+    with ManagedProcess("/bin/foo", wdir=tmp_path) as proc:
         proc._proc.wait = mocker.Mock(
             side_effect=subprocess.TimeoutExpired("/bin/foo", 5)
         )

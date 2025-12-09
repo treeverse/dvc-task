@@ -42,12 +42,10 @@ docs = [
   "mkdocstrings-python>=1.6.3,<2"
 ]
 tests = [
-  "pytest>=7,<9",
+  "pytest>=7,<10",
   "pytest-cov>=4.1.0",
   "pytest-mock",
   "pytest-rerunfailures",
-  "pytest-sugar",
-  "pytest-test-utils>=0.0.6"
 ]
 dev = [
   "dvc-task[tests,docs]",
