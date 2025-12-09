@@ -2,11 +2,11 @@
 
 import json
 import os
+import pathlib
 from typing import Optional
 
 import pytest
 from pytest_mock import MockerFixture
-from pytest_test_utils import TmpDir
 
 from dvc_task.proc.manager import ProcessManager
 from dvc_task.proc.process import ProcessInfo
@@ -27,9 +27,9 @@ def popen_pid(mocker: MockerFixture) -> int:
 
 
 @pytest.fixture(name="process_manager")
-def fixture_process_manager(tmp_dir: TmpDir) -> ProcessManager:
-    """Return a process manager which uses tmp_dir as the working dir."""
-    return ProcessManager(os.fspath(tmp_dir))
+def fixture_process_manager(tmp_path: pathlib.Path) -> ProcessManager:
+    """Return a process manager which uses tmp_path as the working dir."""
+    return ProcessManager(os.fspath(tmp_path))
 
 
 def create_process(

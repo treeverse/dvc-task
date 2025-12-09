@@ -1,12 +1,12 @@
 """Process manager tests."""
 
 import builtins
+import pathlib
 import signal
 import sys
 
 import pytest
 from pytest_mock import MockerFixture
-from pytest_test_utils import TmpDir
 
 from dvc_task.proc.exceptions import ProcessNotTerminatedError, UnsupportedSignalError
 from dvc_task.proc.manager import ProcessManager
@@ -110,7 +110,7 @@ def test_kill_commands(
 
 def test_remove(
     mocker: MockerFixture,
-    tmp_dir: TmpDir,
+    tmp_path: pathlib.Path,
     process_manager: ProcessManager,
     running_process: str,
     finished_process: str,
@@ -118,18 +118,18 @@ def test_remove(
     """Process should be removed."""
     mocker.patch("os.kill", return_value=None)
     process_manager.remove(finished_process)
-    assert not (tmp_dir / finished_process).exists()
+    assert not (tmp_path / finished_process).exists()
     with pytest.raises(ProcessNotTerminatedError):
         process_manager.remove(running_process)
-    assert (tmp_dir / running_process).exists()
+    assert (tmp_path / running_process).exists()
     process_manager.remove(running_process, True)
-    assert not (tmp_dir / running_process).exists()
+    assert not (tmp_path / running_process).exists()
 
 
 @pytest.mark.parametrize("force", [True, False])
 def test_cleanup(  # noqa: PLR0913
     mocker: MockerFixture,
-    tmp_dir: TmpDir,
+    tmp_path: pathlib.Path,
     process_manager: ProcessManager,
     running_process: str,
     finished_process: str,
@@ -138,8 +138,8 @@ def test_cleanup(  # noqa: PLR0913
     """Process directory should be removed."""
     mocker.patch("os.kill", return_value=None)
     process_manager.cleanup(force)
-    assert (tmp_dir / running_process).exists() != force
-    assert not (tmp_dir / finished_process).exists()
+    assert (tmp_path / running_process).exists() != force
+    assert not (tmp_path / finished_process).exists()
 
 
 def test_follow(
