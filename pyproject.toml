@@ -51,7 +51,7 @@ dev = [
   "dvc-task[tests,docs]",
   "celery-types; python_version > '3.9'",
   "celery-types==0.15.0; python_version < '3.9'",
-  "mypy==1.18.2"
+  "mypy==1.19.0"
 ]
 
 [tool.setuptools_scm]
